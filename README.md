@@ -26,3 +26,4 @@ Required GitHub secrets on the frontend repo:
 - `AWS_ROLE_ARN` - IAM role ARN for OIDC
 - `S3_BUCKET` - S3 bucket name (from terraform output)
 - `CF_DISTRIBUTION_ID` - CloudFront distribution ID (from terraform output)
+
