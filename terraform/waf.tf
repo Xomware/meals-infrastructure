@@ -1,7 +1,8 @@
-module "waf_cloudfront" {
-  source = "git::https://github.com/domgiordano/waf.git?ref=v2.0.0"
+#**********************
+# WAF (shared from xomware-infrastructure)
+# Consumes shared WAF ACL ARN via SSM Parameter Store
+#**********************
 
-  app_name = "${var.app_name}-cloudfront"
-  scope    = "CLOUDFRONT"
-  tags     = local.standard_tags
+data "aws_ssm_parameter" "shared_cloudfront_waf_arn" {
+  name = "/xomware/shared/cloudfront-waf-acl-arn"
 }
