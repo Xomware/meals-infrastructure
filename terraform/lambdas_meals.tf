@@ -14,21 +14,21 @@ locals {
     },
     {
       name        = "get"
-      description = "Get a single meal by ID"
+      description = "Get a single meal by ID (id in body)"
       path_part   = "get"
-      http_method = "GET"
+      http_method = "POST"
     },
     {
       name        = "update"
-      description = "Update an existing meal"
+      description = "Toggle cooked on a meal (id in body)"
       path_part   = "update"
-      http_method = "PUT"
+      http_method = "POST"
     },
     {
       name        = "delete"
-      description = "Delete a meal"
+      description = "Delete a meal (id in body)"
       path_part   = "delete"
-      http_method = "DELETE"
+      http_method = "POST"
     },
     {
       name        = "rate"
@@ -40,7 +40,31 @@ locals {
       name        = "ratings"
       description = "Get ratings for a meal"
       path_part   = "ratings"
-      http_method = "GET"
+      http_method = "POST"
+    },
+    {
+      name        = "edit"
+      description = "Update fields on an existing meal (instructions, ingredients, etc.)"
+      path_part   = "edit"
+      http_method = "POST"
+    },
+    {
+      name        = "comment-add"
+      description = "Add a comment to a meal"
+      path_part   = "comment-add"
+      http_method = "POST"
+    },
+    {
+      name        = "comments-list"
+      description = "List comments for a meal"
+      path_part   = "comments-list"
+      http_method = "POST"
+    },
+    {
+      name        = "comment-delete"
+      description = "Delete a comment (author only)"
+      path_part   = "comment-delete"
+      http_method = "POST"
     },
   ]
 }
