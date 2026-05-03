@@ -8,12 +8,13 @@ locals {
     "app_name" = var.app_name
   }
 
-  # Lambda environment variables
+  # Lambda environment variables (names match what handler code reads)
   lambda_variables = {
-    APP_NAME             = var.app_name
-    MEALS_TABLE_NAME     = aws_dynamodb_table.meals.id
-    MEAL_RATINGS_TABLE_NAME = aws_dynamodb_table.meal_ratings.id
-    AWS_ACCOUNT_ID       = data.aws_caller_identity.web_app_account.account_id
+    APP_NAME            = var.app_name
+    MEALS_TABLE_NAME    = aws_dynamodb_table.meals.id
+    RATINGS_TABLE_NAME  = aws_dynamodb_table.meal_ratings.id
+    COMMENTS_TABLE_NAME = aws_dynamodb_table.meal_comments.id
+    AWS_ACCOUNT_ID      = data.aws_caller_identity.web_app_account.account_id
   }
 
   # API Gateway allowed headers

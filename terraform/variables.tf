@@ -1,7 +1,7 @@
 variable "app_name" {
   description = "The name for the application."
   type        = string
-  default     = "meals"
+  default     = "xomappetit"
 }
 
 variable "domain_suffix" {
