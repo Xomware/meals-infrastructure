@@ -103,6 +103,39 @@ locals {
       http_method = "POST"
     },
   ]
+
+  friends_lambdas = [
+    {
+      name        = "list"
+      description = "List the caller's friends, incoming requests, and outgoing pending requests"
+      path_part   = "list"
+      http_method = "POST"
+    },
+    {
+      name        = "add"
+      description = "Send a friend request to another user (instant friend if reciprocal pending)"
+      path_part   = "add"
+      http_method = "POST"
+    },
+    {
+      name        = "respond"
+      description = "Accept or decline an incoming friend request"
+      path_part   = "respond"
+      http_method = "POST"
+    },
+    {
+      name        = "remove"
+      description = "Cancel an outgoing pending request, or remove an accepted friend"
+      path_part   = "remove"
+      http_method = "POST"
+    },
+    {
+      name        = "feed"
+      description = "Recipes from caller + caller's friends, newest first (paginated)"
+      path_part   = "feed"
+      http_method = "POST"
+    },
+  ]
 }
 
 resource "aws_lambda_function" "recipes" {
@@ -126,6 +159,42 @@ resource "aws_lambda_function" "recipes" {
   }
 
   tags = merge(local.standard_tags, tomap({ "name" = "${var.app_name}-recipes-${each.value.name}", "lambda_type" = "recipes" }))
+
+  lifecycle {
+    ignore_changes = [
+      description,
+      filename,
+      source_code_hash
+    ]
+  }
+
+  depends_on = [
+    aws_iam_role_policy.lambda_role_policy,
+    aws_iam_role.lambda_role
+  ]
+}
+
+resource "aws_lambda_function" "friends" {
+  for_each         = { for l in local.friends_lambdas : l.name => l }
+  function_name    = "${var.app_name}-friends-${each.value.name}"
+  description      = each.value.description
+  filename         = "./templates/lambda_stub.zip"
+  source_code_hash = filebase64sha256("./templates/lambda_stub.zip")
+  handler          = "index.handler"
+  runtime          = var.lambda_runtime
+  memory_size      = var.lambda_memory_size
+  timeout          = var.lambda_timeout
+  role             = aws_iam_role.lambda_role.arn
+
+  environment {
+    variables = local.lambda_variables
+  }
+
+  tracing_config {
+    mode = var.lambda_trace_mode
+  }
+
+  tags = merge(local.standard_tags, tomap({ "name" = "${var.app_name}-friends-${each.value.name}", "lambda_type" = "friends" }))
 
   lifecycle {
     ignore_changes = [

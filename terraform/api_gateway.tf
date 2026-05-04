@@ -25,6 +25,15 @@ locals {
       invoke_arn  = aws_lambda_function.cooks[l.name].invoke_arn
     }
   ]
+
+  friends_endpoints = [
+    for l in local.friends_lambdas : {
+      name        = l.name
+      path_part   = l.path_part
+      http_method = l.http_method
+      invoke_arn  = aws_lambda_function.friends[l.name].invoke_arn
+    }
+  ]
 }
 
 module "api" {
@@ -47,5 +56,6 @@ module "api" {
   services = {
     recipes = { path_prefix = "recipes", endpoints = local.recipes_endpoints }
     cooks   = { path_prefix = "cooks", endpoints = local.cooks_endpoints }
+    friends = { path_prefix = "friends", endpoints = local.friends_endpoints }
   }
 }
