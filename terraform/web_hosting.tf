@@ -6,11 +6,11 @@
 #   - xomappétit.xomware.com (canonical, IDN — punycode xn--xomapptit-g4a)
 #   - xomappetit.xomware.com  (ASCII fallback — 301-redirects to canonical)
 #
-# Module v1.3.0 adds support for SAN aliases + a CloudFront Function that
-# enforces canonical host. var.domain_name is treated as the *primary* on
-# the cert/CF/Route53 side; canonical_host names the redirect target. We
-# keep the ASCII form as var.domain_name (matches existing infra naming and
-# is what API/lambda env vars reference) and put the IDN form in SANs.
+# Module v1.4.0 combines canonical_host redirect + subroute_rewrite into one
+# viewer-request CloudFront Function (CF only allows one viewer-request fn
+# per cache behavior). We need both: canonical to enforce the IDN host and
+# subroute rewrite so Next.js static-export deep routes (/auth/sign-in.html)
+# resolve correctly when requested without the extension.
 #**********************
 
 locals {
