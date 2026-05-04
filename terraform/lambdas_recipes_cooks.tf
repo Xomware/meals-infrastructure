@@ -17,8 +17,14 @@ locals {
     },
     {
       name        = "list"
-      description = "List the caller's recipes (author-index by createdAt)"
+      description = "List a user's recipes (caller's by default; other user's public-only)"
       path_part   = "list"
+      http_method = "POST"
+    },
+    {
+      name        = "list-public"
+      description = "Global feed of public recipes, newest first (paginated)"
+      path_part   = "list-public"
       http_method = "POST"
     },
     {
