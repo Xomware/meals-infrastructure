@@ -18,7 +18,7 @@ locals {
 }
 
 module "web" {
-  source = "git::https://github.com/domgiordano/web-hosting.git?ref=v1.3.0"
+  source = "git::https://github.com/domgiordano/web-hosting.git?ref=v1.4.0"
 
   app_name    = var.app_name
   domain_name = local.domain_name
@@ -29,6 +29,12 @@ module "web" {
   # and Host-header comparison in the redirect function — both arrive as ASCII)
   subject_alternative_names = [local.idn_canonical_host]
   canonical_host            = local.idn_canonical_host
+
+  # Static-export deep-route rewrite. Without this, /auth/sign-in 404s on S3
+  # (Next.js export generated /auth/sign-in.html, not /auth/sign-in/index.html),
+  # CloudFront's spa_error_path falls back to /index.html (the home page),
+  # whose useRequireAuth hook redirects to /auth/sign-in?next=… — infinite loop.
+  enable_subroute_rewrite = true
 
   # S3
   kms_key_arn = aws_kms_alias.web_app.target_key_arn
