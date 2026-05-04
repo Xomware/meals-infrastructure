@@ -11,6 +11,12 @@
 # per cache behavior). We need both: canonical to enforce the IDN host and
 # subroute rewrite so Next.js static-export deep routes (/auth/sign-in.html)
 # resolve correctly when requested without the extension.
+#
+# Note: a one-shot CloudFront update was issued out-of-band (2026-05-04) to
+# swap the distribution's function_association from xomappetit-canonical-redirect
+# to xomappetit-viewer-request. Terraform's apply ordering tried to delete the
+# old function before updating the distribution, hitting CF's FunctionInUse
+# constraint. The CLI swap unstuck the state; this apply finalizes the cleanup.
 #**********************
 
 locals {
