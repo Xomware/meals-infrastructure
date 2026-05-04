@@ -8,12 +8,21 @@ resource "aws_api_gateway_account" "api_gateway_account" {
 #**********************
 
 locals {
-  meals_endpoints = [
-    for l in local.meals_lambdas : {
+  recipes_endpoints = [
+    for l in local.recipes_lambdas : {
       name        = l.name
       path_part   = l.path_part
       http_method = l.http_method
-      invoke_arn  = aws_lambda_function.meals[l.name].invoke_arn
+      invoke_arn  = aws_lambda_function.recipes[l.name].invoke_arn
+    }
+  ]
+
+  cooks_endpoints = [
+    for l in local.cooks_lambdas : {
+      name        = l.name
+      path_part   = l.path_part
+      http_method = l.http_method
+      invoke_arn  = aws_lambda_function.cooks[l.name].invoke_arn
     }
   ]
 }
@@ -36,6 +45,7 @@ module "api" {
   certificate_arn = aws_acm_certificate_validation.api.certificate_arn
 
   services = {
-    meals = { path_prefix = "meals", endpoints = local.meals_endpoints }
+    recipes = { path_prefix = "recipes", endpoints = local.recipes_endpoints }
+    cooks   = { path_prefix = "cooks", endpoints = local.cooks_endpoints }
   }
 }
