@@ -13,8 +13,8 @@ resource "aws_kms_key" "web_app" {
     Id      = "KMSKeyPolicy"
     Statement = [
       {
-        Sid      = "Full key access for account root"
-        Effect   = "Allow"
+        Sid    = "Full key access for account root"
+        Effect = "Allow"
         Principal = {
           AWS = "arn:aws:iam::${local.web_app_account_id}:root"
         }
