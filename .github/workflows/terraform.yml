@@ -53,7 +53,10 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -input=false -lock=false
+        # Tee to disk so the comment step can read it without stuffing the
+        # whole plan into argv/env (Linux ARG_MAX = 128KB combined; large
+        # plans blow past that).
+        run: terraform plan -no-color -input=false -lock=false 2>&1 | tee /tmp/tf-plan.txt
         continue-on-error: true
         env:
           TF_VAR_api_secret_key: ${{ secrets.API_SECRET_KEY }}
@@ -61,12 +64,15 @@ jobs:
       - name: Comment Plan on PR
         uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
-        env:
-          PLAN_STDOUT: ${{ steps.plan.outputs.stdout }}
         with:
           script: |
-            const plan = process.env.PLAN_STDOUT || 'No output';
-            const truncated = plan.length > 60000 ? plan.substring(0, 60000) + '\n... truncated' : plan;
+            const fs = require('fs');
+            const raw = fs.existsSync('/tmp/tf-plan.txt')
+              ? fs.readFileSync('/tmp/tf-plan.txt', 'utf8')
+              : 'No output';
+            const truncated = raw.length > 60000
+              ? raw.substring(0, 60000) + '\n... truncated'
+              : raw;
             const body = '## Terraform Plan\n```\n' + truncated + '\n```';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
