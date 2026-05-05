@@ -108,6 +108,24 @@ locals {
       path_part   = "delete"
       http_method = "POST"
     },
+    {
+      name        = "comment-add"
+      description = "Add a comment to a cook session"
+      path_part   = "comment-add"
+      http_method = "POST"
+    },
+    {
+      name        = "comments-list"
+      description = "List comments on a cook session"
+      path_part   = "comments-list"
+      http_method = "POST"
+    },
+    {
+      name        = "comment-delete"
+      description = "Delete a cook-session comment (author or chef only)"
+      path_part   = "comment-delete"
+      http_method = "POST"
+    },
   ]
 
   friends_lambdas = [
