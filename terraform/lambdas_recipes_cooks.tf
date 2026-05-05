@@ -52,6 +52,12 @@ locals {
       http_method = "POST"
     },
     {
+      name        = "like"
+      description = "Toggle a like on a recipe (returns new count + likedByMe)"
+      path_part   = "like"
+      http_method = "POST"
+    },
+    {
       name        = "comment-add"
       description = "Add a comment to a recipe"
       path_part   = "comment-add"

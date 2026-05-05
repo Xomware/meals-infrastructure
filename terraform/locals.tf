@@ -17,6 +17,7 @@ locals {
     RECIPE_RATINGS_TABLE_NAME    = aws_dynamodb_table.recipe_ratings.id
     RECIPE_COMMENTS_TABLE_NAME   = aws_dynamodb_table.recipe_comments.id
     FRIENDSHIPS_TABLE_NAME       = aws_dynamodb_table.friendships.id
+    RECIPE_LIKES_TABLE_NAME      = aws_dynamodb_table.recipe_likes.id
     AWS_ACCOUNT_ID               = data.aws_caller_identity.web_app_account.account_id
   }
 
