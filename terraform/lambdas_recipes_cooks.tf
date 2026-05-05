@@ -75,6 +75,18 @@ locals {
       path_part   = "comment-delete"
       http_method = "POST"
     },
+    {
+      name        = "import-url"
+      description = "Import a recipe from a URL (JSON-LD fast path, Claude Haiku fallback). Returns a draft to prefill /recipes/new."
+      path_part   = "import-url"
+      http_method = "POST"
+    },
+    {
+      name        = "import-text"
+      description = "Import a recipe from pasted text (Instagram/TikTok captions, OCR, blog excerpts). Claude Haiku → sanitized draft."
+      path_part   = "import-text"
+      http_method = "POST"
+    },
   ]
 
   cooks_lambdas = [

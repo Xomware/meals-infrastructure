@@ -23,6 +23,7 @@ locals {
     BLOCKS_TABLE_NAME            = aws_dynamodb_table.blocks.id
     REPORTS_TABLE_NAME           = aws_dynamodb_table.reports.id
     AWS_ACCOUNT_ID               = data.aws_caller_identity.web_app_account.account_id
+    ANTHROPIC_API_KEY            = var.anthropic_api_key
   }
 
   # API Gateway allowed headers
