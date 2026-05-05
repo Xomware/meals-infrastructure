@@ -43,6 +43,24 @@ locals {
       invoke_arn  = aws_lambda_function.notifications[l.name].invoke_arn
     }
   ]
+
+  blocks_endpoints = [
+    for l in local.moderation_lambdas : {
+      name        = l.name
+      path_part   = l.path_part
+      http_method = l.http_method
+      invoke_arn  = aws_lambda_function.moderation[l.name].invoke_arn
+    } if l.service == "blocks"
+  ]
+
+  reports_endpoints = [
+    for l in local.moderation_lambdas : {
+      name        = l.name
+      path_part   = l.path_part
+      http_method = l.http_method
+      invoke_arn  = aws_lambda_function.moderation[l.name].invoke_arn
+    } if l.service == "reports"
+  ]
 }
 
 module "api" {
@@ -67,5 +85,7 @@ module "api" {
     cooks         = { path_prefix = "cooks", endpoints = local.cooks_endpoints }
     friends       = { path_prefix = "friends", endpoints = local.friends_endpoints }
     notifications = { path_prefix = "notifications", endpoints = local.notifications_endpoints }
+    blocks        = { path_prefix = "blocks", endpoints = local.blocks_endpoints }
+    reports       = { path_prefix = "reports", endpoints = local.reports_endpoints }
   }
 }
