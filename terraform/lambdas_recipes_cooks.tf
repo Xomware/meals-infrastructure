@@ -28,6 +28,12 @@ locals {
       http_method = "POST"
     },
     {
+      name        = "search"
+      description = "Search public recipes by name (case-insensitive contains)"
+      path_part   = "search"
+      http_method = "POST"
+    },
+    {
       name        = "get"
       description = "Get a single recipe by id (privacy-enforced)"
       path_part   = "get"
