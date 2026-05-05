@@ -22,6 +22,13 @@ variable "api_secret_key" {
   sensitive   = true
 }
 
+variable "anthropic_api_key" {
+  description = "Anthropic API key for the recipe-importer Lambdas (Claude Messages API). Wired in from the org secret DEV_ANTHROPIC_API_KEY via TF_VAR_anthropic_api_key."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 # CloudFront Variables
 variable "cloudfront_origin_path" {
   type    = string
