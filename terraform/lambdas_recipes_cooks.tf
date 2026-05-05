@@ -93,6 +93,12 @@ locals {
       path_part   = "import-text"
       http_method = "POST"
     },
+    {
+      name        = "compute-macros"
+      description = "Compute macros from an ingredient list using a static nutrition table. Pure function — no DB writes."
+      path_part   = "compute-macros"
+      http_method = "POST"
+    },
   ]
 
   cooks_lambdas = [
