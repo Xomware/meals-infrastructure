@@ -34,6 +34,15 @@ locals {
       invoke_arn  = aws_lambda_function.friends[l.name].invoke_arn
     }
   ]
+
+  notifications_endpoints = [
+    for l in local.notifications_lambdas : {
+      name        = l.name
+      path_part   = l.path_part
+      http_method = l.http_method
+      invoke_arn  = aws_lambda_function.notifications[l.name].invoke_arn
+    }
+  ]
 }
 
 module "api" {
@@ -54,8 +63,9 @@ module "api" {
   certificate_arn = aws_acm_certificate_validation.api.certificate_arn
 
   services = {
-    recipes = { path_prefix = "recipes", endpoints = local.recipes_endpoints }
-    cooks   = { path_prefix = "cooks", endpoints = local.cooks_endpoints }
-    friends = { path_prefix = "friends", endpoints = local.friends_endpoints }
+    recipes       = { path_prefix = "recipes", endpoints = local.recipes_endpoints }
+    cooks         = { path_prefix = "cooks", endpoints = local.cooks_endpoints }
+    friends       = { path_prefix = "friends", endpoints = local.friends_endpoints }
+    notifications = { path_prefix = "notifications", endpoints = local.notifications_endpoints }
   }
 }
